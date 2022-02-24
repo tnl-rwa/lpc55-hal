@@ -5,7 +5,8 @@
 #![no_main]
 #![no_std]
 
-use cortex_m_semihosting::{dbg,debug};
+use cortex_m_semihosting::dbg;
+use cortex_m::asm;
 use panic_semihosting as _;
 use lpc55_hal as hal;
 
@@ -37,9 +38,15 @@ const APP: () = {
 
     #[task]
     fn bar(_: bar::Context) {
-        dbg!("bar");
+        dbg!("bar", );
 
-        debug::exit(debug::EXIT_SUCCESS);
+        dbg!("Bar: entering the endless loop...");
+        loop {
+            asm::wfi();
+        dbg!("bar");
+        }
+        // debug::exit(debug::EXIT_SUCCESS);
+
     }
 
     #[task(priority = 2)]
